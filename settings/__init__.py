@@ -1,0 +1,1 @@
+DB_URI = "mysql+aiomysql://ainame:ainame@39.105.88.49:3306/ainame?charset=utf8"
