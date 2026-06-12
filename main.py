@@ -10,10 +10,13 @@ from fastapi import FastAPI
 from fastapi_mail import FastMail, MessageSchema, MessageType
 from fastapi import Depends
 from dependencies import get_mail
+from routers.auth_router import router as auth_router
 
 
 app = FastAPI()
 
+# 导入用户路由
+app.include_router(auth_router)
 
 @app.get("/")
 async def root():
