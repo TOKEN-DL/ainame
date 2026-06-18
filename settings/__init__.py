@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 DB_URI = "mysql+aiomysql://ainame:ainame@39.105.88.49:3306/ainame?charset=utf8"
 
 
@@ -13,3 +15,7 @@ MAIL_STARTTLS = True
 MAIL_USE_SSL = False
 
 
+JWT_SECRET_KEY = "delong"  # 密钥
+# TOKEN过期时间
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=1)

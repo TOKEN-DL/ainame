@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, model_validator
 from typing import Annotated
 
+# 定义每个接口的输入和输出
 
 UsernameStr = Annotated[str, Field(min_length=3, max_length=20,description="用户名")]
 PasswordStr = Annotated[str, Field(min_length=6, max_length=20,description="密码")]
@@ -23,5 +24,20 @@ class UserCreateSchema(BaseModel):
         email: EmailStr
         username: UsernameStr
         password: PasswordStr
+
+# 登录输入
+class LoginIn(BaseModel):
+    email: EmailStr
+    password: PasswordStr
+
+class UserSchema(BaseModel):
+    id: Annotated[int, Field(...)]
+    email: EmailStr
+    username: UsernameStr
+
+class LoginOut(BaseModel):
+    user: UserSchema
+    token: str
+
 
 
