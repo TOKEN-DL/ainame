@@ -3,7 +3,18 @@ from settings import DB_URI
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import MetaData
+from sqlalchemy.dialects.mysql.pymysql import MySQLDialect_pymysql
 
+
+# 1. 自定义方言，修复 ping 方法参数
+class CustomMySQLAsyncDialect(MySQLDialect_pymysql):
+    def do_ping(self, dbapi_connection):
+        try:
+            # 补充 aiomysql 强制要求的 reconnect 参数
+            dbapi_connection.ping(reconnect=True)
+            return True
+        except Exception:
+            return False
 
 # 数据库连接引擎
 engine = create_async_engine(
@@ -20,6 +31,8 @@ engine = create_async_engine(
     pool_recycle=3600,
     # 连接前是否预检查
     pool_pre_ping=True,
+    dialect=CustomMySQLAsyncDialect(),  # 启用自定义方言
+
 
 )
 
@@ -31,6 +44,7 @@ AsyncSessionFactory = sessionmaker(
     autoflush=True,
     # 是否在执行commit操作后Session就过期
     expire_on_commit=False,
+
 )
 
 
